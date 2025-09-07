@@ -1,0 +1,39 @@
+#include <iostream>
+#include <time.h>
+#include <stdio.h>
+#include <math.h>
+#include <chrono>
+inline long double square_root(long int num)
+{
+ long double answer;
+  for(int i=1;i<num/2+1;i++)
+     {
+       if(i*i<=num) answer=(num-i*i)/(long double)(i*2)+i;
+     }
+
+  while(answer*answer>num)
+  {
+     if(answer*answer/1.01/1.01>num){answer/=1.01;}
+     if(answer*answer/1.001/1.001>num){answer/=1.001;}
+     if(answer/1.00012*answer/1.00012>num){answer=answer/1.0001;}
+     if(answer*answer*1.0000025*1.0000025>num)answer=answer/1.0000025;
+     answer/=1.00000001;
+  }
+  return answer;
+}
+
+int main()
+{// clock_t t=clock();
+  long int num;
+  std::cout<<"enter a number:";
+  std::cin>>num;
+  auto start = std::chrono::high_resolution_clock::now();
+  long double answer=square_root(num);
+  std::cout<<"The square root of "<<num<<" is: "<<answer<<"\n";
+  std::cout<<"THe actual square root of "<<num<<" is: "<<sqrt(num)<<"\n";
+  //t=clock()-t;
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = end - start;
+  //printf("It took %ld clicks (%f seconds) to excute. \n",t,((float)t/CLOCKS_PER_SEC));
+  std::cout << "It took " << elapsed.count() << " seconds to execute.\n";
+}
